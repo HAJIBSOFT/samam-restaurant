@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -25,23 +25,23 @@
         /* --- General Styles --- */
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #fffaf0;
+            background-color: #f5ba38;
             color: #4a3b31;
             line-height: 1.6;
             overflow-x: hidden; /* <<---  منع التمرير الأفقي للصفحة  ---<< */
         }
         .navbar {
-            background-color: #f82c2b; color: white; padding: 12px 20px;
+            background-color: #ffffff; color: white; padding: 12px 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex;
             justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000;
         }
         .navbar-brand {
-            font-size: 1.6em; font-weight: bold; color: white; text-decoration: none;
+            font-size: 1.6em; font-weight: bold; color:#f82c2b; text-decoration: none;
         }
         .navbar-brand i { margin-left: 8px; }
         .cart-toggle-button {
-            background: none; border: none; font-size: 1.5em; color: white;
+            background: none; border: none; font-size: 1.5em; color: #f82c2b;
             cursor: pointer; position: relative; padding: 5px;
         }
         .cart-toggle-button .cart-count-badge {
@@ -360,6 +360,20 @@
         .delivery-options { margin-bottom: 12px; text-align: center; }
         .delivery-options label { margin: 0 8px; cursor: pointer; font-size: 0.9em;}
         .delivery-options input[type="radio"] { margin-left: 4px; transform: scale(0.9); vertical-align: middle; }
+
+        /* --- Payment Options Styling (New) --- */
+        .payment-options { margin-bottom: 12px; text-align: center; }
+        .payment-options .payment-options-title {
+            display: block;
+            margin-bottom: 8px; /* Increased margin for title */
+            font-weight: bold;
+            color: #4a3b31;
+            font-size: 0.95em; /* Consistent font size */
+        }
+        .payment-options label { margin: 0 8px; cursor: pointer; font-size: 0.9em;}
+        .payment-options input[type="radio"] { margin-left: 4px; transform: scale(0.9); vertical-align: middle; }
+        /* --- End Payment Options Styling --- */
+
         .cart-sidebar-footer textarea {
             width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid #ccc;
             border-radius: 5px; box-sizing: border-box; min-height: 60px; resize: vertical;
@@ -399,7 +413,7 @@
         /* --- Footer Styling --- */
         .site-footer {
             background-color: #000000;
-            color: #fffaf0;
+            color: #f5ba38;
             padding: 40px 0 20px 0;
             text-align: center;
             margin-top: 50px;
@@ -456,7 +470,7 @@
             width: 20px;
         }
         .footer-social-links a {
-            color: #fffaf0;
+            color: #f5ba38;
             font-size: 1.5em;
             margin: 0 10px;
             transition: color 0.3s ease, transform 0.2s ease;
@@ -521,8 +535,8 @@
             .cart-item-details .item-qty-price { font-size: 0.9em; }
             .cart-item-actions .item-total-price { font-size: 1.05em; }
             .remove-item-btn { font-size: 0.85em !important; padding: 6px 10px !important;}
-            .delivery-options label { font-size: 1em; }
-            .delivery-options input[type="radio"] { transform: scale(1); }
+            .delivery-options label, .payment-options label { font-size: 1em; } /* Adjusted for payment options */
+            .delivery-options input[type="radio"], .payment-options input[type="radio"] { transform: scale(1); } /* Adjusted for payment options */
             .cart-sidebar-footer textarea { font-size: 1em; min-height: 70px; padding: 10px;}
             .summary-line { font-size: 1em; }
             .summary-line.total { font-size: 1.3em; }
@@ -565,7 +579,7 @@
 
     <div class="container">
 
-             
+
                <div style="text-align: center;">
   <img decoding="async" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNUjMhcpa3_rs-QjrQol2gEEhEkU2DvCfMWq-Nif0NDpLO9mPm6OrlpefuJYAz1OZUnCLbx7eYNUjXy-wBmD3eUNfCJDBllbnBCFk0ZTFIjLmLFuD0HHQJlGWrZ_zahwAMQu9R2nCyAdxmLvX69zkAKaQ76UnJdKPbHYT32BhU2VUN41g5YrsGosyu4wGD/s317/smmam2.png" alt="تم تصميم هذا المنيو بواسطة فريق حاجب سوفت:0510012621" title="تم تصميم هذا المنيو بواسطة فريق حاجب سوفت:0510012621">
 </div>
@@ -607,6 +621,15 @@
                 <label><input type="radio" name="deliveryType" value="pickup" checked> استلام من المطعم</label>
                 <label><input type="radio" name="deliveryType" value="delivery"> توصيل (داخل الحي)</label>
             </div>
+
+            <!-- New Payment Options Section -->
+            <div class="payment-options">
+                <span class="payment-options-title">اختر طريقة الدفع:</span>
+                <label><input type="radio" name="paymentMethod" value="cash" checked> كاش</label>
+                <label><input type="radio" name="paymentMethod" value="network"> شبكة (جهاز مدى)</label>
+            </div>
+            <!-- End New Payment Options Section -->
+
             <textarea id="general-order-notes" placeholder="ملاحظات إضافية على الطلب"></textarea>
 
             <div class="summary-line">
@@ -645,11 +668,11 @@
     <footer class="site-footer">
         <div class="footer-content container">
             <div class="footer-logo-area">
-               <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNwWvJnsKXhzPXZ6gtppubWX391qQIvvnfYGMH5bM49SqzMITaMS-xNJOJ89_Jaa6jgtZ3heoj_UsArgigCksebxkeSpk16LcCtKr8EBRqwYyf-CRVrR8KaBVAfU4TLe6fU9y63AFybqFzOSeBwx7qlhKebqb2X6WAItiTYSFQezZmhjbn5HSzOtiAcaUH/s7163/Untitled-990910.png" alt="تم تصميم هذا المنيو بواسطة فريق حاجب سوفت :0510012621" class="footer-logo-img"> 
+               <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNwWvJnsKXhzPXZ6gtppubWX391qQIvvnfYGMH5bM49SqzMITaMS-xNJOJ89_Jaa6jgtZ3heoj_UsArgigCksebxkeSpk16LcCtKr8EBRqwYyf-CRVrR8KaBVAfU4TLe6fU9y63AFybqFzOSeBwx7qlhKebqb2X6WAItiTYSFQezZmhjbn5HSzOtiAcaUH/s7163/Untitled-990910.png" alt="تم تصميم هذا المنيو بواسطة فريق حاجب سوفت :0510012621" class="footer-logo-img">
                      <p class="footer-tagline"> أستعد لمغامرة جديدة مع صمّام</p>
 					  <p class="footer-tagline"> بطعم ونكهة مناسبة  لأصحاب الذائقة المميزة</p>
             </div>
-         
+
 			    <div class="footer-social-links">
                 <h4>تابعنا على:</h4>
                 <a href="https://www.tiktok.com/@samamrestaurant?_t=ZS-8wcrCLgiCiO&_r=1" aria-label="تيك توك"><i class="fa-brands fa-tiktok"></i></a>
@@ -941,6 +964,7 @@
         const notificationMessage = document.getElementById('notification-message');
         const generalOrderNotesTextarea = document.getElementById('general-order-notes');
         const deliveryTypeRadios = document.querySelectorAll('input[name="deliveryType"]');
+        const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]'); // New
 
         const searchInput = document.getElementById('search-input');
         const toggleViewBtn = document.getElementById('toggle-view-btn');
@@ -948,6 +972,7 @@
 
         let cart = [];
         let currentDeliveryType = 'pickup';
+        let currentPaymentMethod = 'cash'; // New: Default payment method
         let currentProductIdInModal = null;
         let currentProductInModalObject = null;
         let notificationTimeout;
@@ -1317,6 +1342,15 @@
             });
         });
 
+        // New: Event listener for payment method radios
+        paymentMethodRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                currentPaymentMethod = this.value;
+                // No need to update cart display unless payment method affects price
+            });
+        });
+
+
         window.removeFromCart = function(itemIndex) {
             cart.splice(itemIndex, 1);
             updateCartDisplay();
@@ -1337,6 +1371,18 @@
 
         function emptyCartAfterCheckout() {
             cart = [];
+            generalOrderNotesTextarea.value = ''; // Clear notes
+            // Reset delivery type to default
+            deliveryTypeRadios.forEach(radio => {
+                if (radio.value === 'pickup') radio.checked = true;
+            });
+            currentDeliveryType = 'pickup';
+             // Reset payment method to default
+            paymentMethodRadios.forEach(radio => {
+                if (radio.value === 'cash') radio.checked = true;
+            });
+            currentPaymentMethod = 'cash';
+
             updateCartDisplay();
             saveCartToLocalStorage();
             showNotification("سيتم تحويلك الى الواتساب فقط اضغط على ارسال");
@@ -1379,6 +1425,10 @@
             } else {
                 message += `نوع الطلب: استلام من المطعم\n`;
             }
+
+            // New: Add payment method to message
+            message += `طريقة الدفع: ${currentPaymentMethod === 'cash' ? 'كاش' : 'شبكة (جهاز مدى)'}\n`;
+
             const generalNotes = generalOrderNotesTextarea.value.trim();
             if (generalNotes) {
                 message += `\nملاحظات عامة:\n${generalNotes}\n`;
@@ -1386,7 +1436,7 @@
             message += `\n--------------------\n`;
             message += `الإجمالي الكلي للطلب: ${finalTotalForMessage.toFixed(2)} ريال\n\n`;
 
-     
+
 
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_self'); // فتح في نفس الصفحة
