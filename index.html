@@ -167,7 +167,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .filter-btn.active {
-            background-color: #ffaf3e; color: white; border-color: #f82c2b;
+            background-color: #f08c00; color: white; border-color: #f82c2b;
             font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
 
@@ -224,7 +224,7 @@
         .product-card .price { font-size: 0.95em; margin-bottom: 10px; font-weight:bold; color:#27ae60;}
         .product-card .customize-btn,
         .product-card .direct-add-btn {
-            background-color: #ffaf3e; color: white; border: none;
+            background-color: #f08c00; color: white; border: none;
             padding: 9px 12px; font-size: 0.9em;
             border-radius: 6px; cursor: pointer;
             transition: background-color 0.3s, padding 0.3s ease, font-size 0.3s ease;
@@ -605,7 +605,7 @@
         <div class="cart-sidebar-footer">
             <div class="delivery-options">
                 <label><input type="radio" name="deliveryType" value="pickup" checked> استلام من المطعم</label>
-                <label><input type="radio" name="deliveryType" value="delivery"> توصيل للمنزل</label>
+                <label><input type="radio" name="deliveryType" value="delivery"> توصيل (داخل الحي)</label>
             </div>
             <textarea id="general-order-notes" placeholder="ملاحظات إضافية على الطلب"></textarea>
 
@@ -657,7 +657,10 @@
                 <a href="https://x.com/samamrestaurant?s=21&t=UOJ7wrbNG_LCuogJeBZRXg" aria-label="تويتر"><i class="fa-brands fa-x-twitter"></i></a>
 				<a href="https://api.whatsapp.com/send/?phone=966539490701" aria-label="واتساب"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
-           
+           <div class="footer-logo-area">
+                  <p class="footer-tagline">متواجدون على تطبيقات التوصيل</p>
+					  <p class="footer-tagline"> هنقرستيشن - جاهز - مرسول - كيتا - تويو - نون فود</p>
+            </div>
         </div>
         <div class="footer-bottom">
             <p>© <span id="current-year"></span> جميع الحقوق محفوظة لحاجب سوفت .</p>
@@ -1370,7 +1373,7 @@
             let finalTotalForMessage = calculatedSubtotal;
 
             if (currentDeliveryType === 'delivery') {
-                message += `نوع الطلب: توصيل للمنزل\n`;
+                message += `نوع الطلب: توصيل (داخل الحي)\n`;
                 message += `رسوم التوصيل: ${deliveryFee.toFixed(2)} ريال\n`;
                 finalTotalForMessage += deliveryFee;
             } else {
