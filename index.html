@@ -222,10 +222,67 @@
         .page-overlay.active { display: block; opacity: 1; }
         .notification-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1003; transition: bottom 0.5s ease; font-size: 1em; }
         .notification-toast.show { bottom: 30px; }
+        
+        /* Ad Popup Styles */
+        .ad-modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.75);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .ad-modal-content {
+            position: relative;
+            background-color: transparent;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInModal 0.4s ease-out;
+        }
+        .ad-modal-content img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .ad-modal-close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: white;
+            color: #333;
+            border: 2px solid #333;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 2em;
+            font-weight: bold;
+            line-height: 36px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            z-index: 2001;
+        }
+        .ad-modal-close-btn:hover {
+            transform: scale(1.1);
+            background-color: #f0f0f0;
+        }
+
     </style>
 </head>
 <body>
 
+    <div class="ad-modal-overlay" id="ad-popup-modal">
+        <div class="ad-modal-content">
+            <button class="ad-modal-close-btn" id="ad-popup-close-btn">&times;</button>
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAZywtz8edTeAYL4_xuVze32oUxUJYPOEaWiefgQ_RaPNLz2G-WFCLZSyGi0dslZtJDJnwKRvz4IMbpZpCuZqK_Mahl7P3gGkUBOdH1wE03Qp4Au541SHL_VWcjfZTDx7TVuEYbBXu5f-HlJpq_isYiZ2grvaxKSlIhyphenhyphenBV_sO7_Xawk9a-2spx5Pvpi29s/s1280/WhatsApp%20Image%202025-08-11%20at%202.58.51%20PM.jpeg" alt="عرض خاص">
+        </div>
+    </div>
+    
     <div class="modal-overlay" id="customization-modal-overlay">
         <div class="modal-content">
             <button class="modal-close-btn" id="modal-close-btn">&times;</button>
@@ -246,7 +303,7 @@
     <div class="page-overlay" id="page-overlay"></div>
 
     <nav class="navbar">
-        <a href="#" class="navbar-brand">صمّـام</a>
+        <a href="#" class="navbar-brand">SAMAM RESTAURANT</a>
         <button class="cart-toggle-button" id="cart-toggle-btn" aria-label="فتح سلة التسوق">
             <i class="fas fa-shopping-basket"></i>
             <span class="cart-count-badge" id="cart-count-badge">0</span>
@@ -301,7 +358,7 @@
             </div>
             <div class="summary-line" id="delivery-fee-line" style="display: none;">
                 <span>رسوم التوصيل:</span>
-                <span><span id="delivery-fee-amount">0</span><i class="currency-symbol"></i></span>
+                <span id="delivery-fee-amount">0</span>
             </div>
             <div class="summary-line total">
                 <span>الإجمالي الكلي:</span>
@@ -342,7 +399,8 @@
             </div>
             <div class="footer-section">
                 <h4>متواجدون على تطبيقات التوصيل</h4>
-                <p class="footer-tagline">هنقرستيشن - جاهز - مرسول - كيتا - تويو - نون فود</p>
+				 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZHdKJrgvtAEGmRX-6gfd6I5sAsQ8SmO_Qf2mfhOTc0tEz0HkGpHQIcX8Sn5knPVlP2AW0O7QEdEkdKjGcuLgdB3Rt8WvT5Ix9sMuMg240gtY4RpB_K6kwoty5_92OOjTLKC6N2VPnvDL5TvNZWXbeerfsBbNoPNcvWv9ixkE8S6eFaK9bML1iIcvL5YG8/s314/HAJIB%20SOFT%200510012621.png" alt="HAJIB SOFT 0510012621" class="footer-logo-img">
+       
             </div>
         </div>
         <div class="footer-bottom">
@@ -353,8 +411,10 @@
     
     <script>
         const deliveryFee = 5;
+        const freeDeliveryThreshold = 25; // New: Minimum amount for free delivery
         const CART_STORAGE_KEY = 'restaurantAppCart_vFinalCompleteWithFooterFixed';
         const COMPACT_VIEW_STORAGE_KEY = 'restaurantApp_compactView_v2';
+        const AD_POPUP_STORAGE_KEY = 'samamAdPopupShown_v1'; // New: Key for ad popup
 
         const productsData = [
             { "id": "IcrUgH", "name": "نصف مظبي دجاج", "category": "دجاج", "description": "2094cal", "basePrice": 20, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8as8Lf83UNvRjG1SJrtHOqgvWpRV5KQO81XNw3dXkvLWw-urXHDF5CBeoZxoGUsTJxjhIF-REHZRZQ1PY5esbHQEeWIqR0PopWYPnI7eNMBfY_aogHG4M00UVQx7CsDGs-SSLVszI4b-N5D_DBbIibCPcfchy0a0D3OU3vGTd8-SBrb16EDRoHOBNhzB1/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.29%20PM%20(1).jpeg" },
@@ -375,7 +435,7 @@
             { "id": "DBwOHB", "name": "كنافة نوتيلا", "category": "طلبات جانبية", "description": "631cal", "basePrice": 10, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhaP5cVqxys12Rq3nopelZPc98zuYK4PED1URQ44yTjzoMREWqMNF-sDCHEpgv8A-bgnZX3z2bekPHBPda0PSV87vQkE4-Tz90ioVnLfdYFfHYdVHX4GKzGnqKN_syd4W5uLXI9SQOrGIQWORaNsBPYpjeubUhewQ_TR_JNNIYF1E3UxJ8AURFACWbwCh4I/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.27%20PM%20(1).jpeg" },
             { "id": "JW6aLV", "name": "ببسي 240 مل", "category": "المشروبات", "description": "145cal", "basePrice": 2, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgmXxmP27TYumFap-Wsvp7waPU44uB07NXeOA2zVtlJJpdAhyphenhyphenHCDppuE_Fs2BoSL0tGktk1i9qOuZlUXsJWrOKstnYZ2saKBbeYcLKXeEjTIs5PKGqsRFerHauKBUFTpiji8BlIFYZwGBPpBeDanXMpPMIUUpqv2wKjAE8m2mk_7LzqVBkXgKkB2HugMlg/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.25%20PM%20(2).jpeg" },
             { "id": "JIAGbe", "name": "ببسي 320 مل", "category": "المشروبات", "description": "145cal", "basePrice": 2.5, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgmXxmP27TYumFap-Wsvp7waPU44uB07NXeOA2zVtlJJpdAhyphenhyphenHCDppuE_Fs2BoSL0tGktk1i9qOuZlUXsJWrOKstnYZ2saKBbeYcLKXeEjTIs5PKGqsRFerHauKBUFTpiji8BlIFYZwGBPpBeDanXMpPMIUUpqv2wKjAE8m2mk_7LzqVBkXgKkB2HugMlg/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.25%20PM%20(2).jpeg" },
-            { "id": "F1QQDr", "name": "حمضيات 220 مل", "category": "المشروبات", "description": "145cal", "basePrice": 2, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfERxCzKmtXwQBbzw3c3-5e2kYhpt6s1qIw4gd3NZXzDCDaSgJ9D75fjNFhxP6zP4IWJxWMAhW2n0fY5ms3xCKXf7_HJb9xTLLsL2ouqWrQm5RApAetnJywVXx8J3GUZn-C8-PbJ61T2E_mj_N2rqHMFzZnDh4xoI-YrpO59mi4T6HrJalokSXHtQE9xMO/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.26%20PM.jpeg" },
+            { "id": "F1QQDr", "name": "حمضيات 240 مل", "category": "المشروبات", "description": "145cal", "basePrice": 2, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfERxCzKmtXwQBbzw3c3-5e2kYhpt6s1qIw4gd3NZXzDCDaSgJ9D75fjNFhxP6zP4IWJxWMAhW2n0fY5ms3xCKXf7_HJb9xTLLsL2ouqWrQm5RApAetnJywVXx8J3GUZn-C8-PbJ61T2E_mj_N2rqHMFzZnDh4xoI-YrpO59mi4T6HrJalokSXHtQE9xMO/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.26%20PM.jpeg" },
             { "id": "qdyJl8", "name": "حمضيات 320 مل", "category": "المشروبات", "description": "145cal", "basePrice": 2.5, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfERxCzKmtXwQBbzw3c3-5e2kYhpt6s1qIw4gd3NZXzDCDaSgJ9D75fjNFhxP6zP4IWJxWMAhW2n0fY5ms3xCKXf7_HJb9xTLLsL2ouqWrQm5RApAetnJywVXx8J3GUZn-C8-PbJ61T2E_mj_N2rqHMFzZnDh4xoI-YrpO59mi4T6HrJalokSXHtQE9xMO/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.26%20PM.jpeg" },
             { "id": "qdyJl18", "name": "ببسي دايت 240 مل", "category": "المشروبات", "description": "1cal", "basePrice": 2, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgmXxmP27TYumFap-Wsvp7waPU44uB07NXeOA2zVtlJJpdAhyphenhyphenHCDppuE_Fs2BoSL0tGktk1i9qOuZlUXsJWrOKstnYZ2saKBbeYcLKXeEjTIs5PKGqsRFerHauKBUFTpiji8BlIFYZwGBPpBeDanXMpPMIUUpqv2wKjAE8m2mk_7LzqVBkXgKkB2HugMlg/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.25%20PM%20(2).jpeg" },
             { "id": "tVG8tJ", "name": "موية", "category": "المشروبات", "description": "0cal", "basePrice": 1, "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3nOaYvlBSmHjh-tPKLEI3qXBSbwYWsr9bOJGiGz1TE-9Eod1yqnbDHOp2JTYnuTLCASEXEZ1HTvIVKlll0Oa04_uMOUL4NVBDk3B8Y2iVkdwqj6XQF50YyfR1qcESlVSp8V0BggPCWrfcVfwXw7Px23awq89q69zxOamB-vlLiOJ5qDfJJfK2QbQP5HNE/s1080/WhatsApp%20Image%202025-08-10%20at%2010.43.25%20PM.jpeg" }
@@ -383,7 +443,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             try {
-                // --- DOM Elements (Corrected Definitions) ---
+                // --- DOM Elements ---
                 const modalOverlay = document.getElementById('customization-modal-overlay');
                 const modalCloseBtn = document.getElementById('modal-close-btn');
                 const modalProductImage = document.getElementById('modal-product-image');
@@ -414,6 +474,8 @@
                 const toggleViewBtn = document.getElementById('toggle-view-btn');
                 const deliveryTypeRadios = document.querySelectorAll('input[name="deliveryType"]');
                 const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+                const adPopupModal = document.getElementById('ad-popup-modal');
+                const adPopupCloseBtn = document.getElementById('ad-popup-close-btn');
                 
                 // --- State Variables ---
                 let cart = [], currentDeliveryType = 'pickup', currentPaymentMethod = 'cash',
@@ -627,9 +689,27 @@
                         });
                     }
                     cartSubtotalAmountElement.textContent = subtotal.toFixed(2);
-                    const deliveryFeeValue = currentDeliveryType === 'delivery' && cart.length > 0 ? deliveryFee : 0;
-                    deliveryFeeLineElement.style.display = deliveryFeeValue > 0 ? 'flex' : 'none';
-                    deliveryFeeAmountElement.textContent = deliveryFeeValue.toFixed(2);
+                    
+                    // --- MODIFIED: Conditional Delivery Fee Logic ---
+                    const isDelivery = currentDeliveryType === 'delivery';
+                    const isEligibleForFreeDelivery = subtotal >= freeDeliveryThreshold;
+                    let deliveryFeeValue = 0;
+                    let deliveryFeeText = "0";
+
+                    if (isDelivery && subtotal > 0) {
+                        if (isEligibleForFreeDelivery) {
+                            deliveryFeeValue = 0;
+                            deliveryFeeText = 'مجاني';
+                        } else {
+                            deliveryFeeValue = deliveryFee;
+                            deliveryFeeText = deliveryFee.toFixed(2);
+                        }
+                        deliveryFeeLineElement.style.display = 'flex';
+                        deliveryFeeAmountElement.innerHTML = `${deliveryFeeText}${deliveryFeeText !== 'مجاني' ? '<i class="currency-symbol"></i>' : ''}`;
+                    } else {
+                        deliveryFeeLineElement.style.display = 'none';
+                    }
+                    
                     cartGrandTotalAmountElement.textContent = (subtotal + deliveryFeeValue).toFixed(2);
                     cartCountBadge.textContent = totalItemsCount;
                 }
@@ -681,10 +761,18 @@
                     });
                     message += "--------------------\n";
                     message += `*المجموع:* ${total.toFixed(2)} ر.س\n`;
+
+                    // --- MODIFIED: Conditional Delivery Fee for WhatsApp Message ---
                     if (currentDeliveryType === 'delivery') {
-                        total += deliveryFee;
-                        message += `*رسوم التوصيل:* ${deliveryFee.toFixed(2)} ر.س\n`;
+                        if (total >= freeDeliveryThreshold) {
+                            message += `*رسوم التوصيل:* مجاني\n`;
+                            // total remains unchanged
+                        } else {
+                            total += deliveryFee;
+                            message += `*رسوم التوصيل:* ${deliveryFee.toFixed(2)} ر.س\n`;
+                        }
                     }
+
                     message += `*الإجمالي الكلي:* ${total.toFixed(2)} ر.س\n\n`;
                     message += `*نوع الطلب:* ${document.querySelector('input[name="deliveryType"]:checked').parentElement.textContent.trim()}\n`;
                     message += `*طريقة الدفع:* ${document.querySelector('input[name="paymentMethod"]:checked').parentElement.textContent.trim()}\n`;
@@ -693,6 +781,14 @@
                     
                     setTimeout(emptyCartAfterCheckout, 1000);
                 };
+                
+                // --- NEW: Function to show one-time ad popup ---
+                function showAdPopupOnce() {
+                    if (!localStorage.getItem(AD_POPUP_STORAGE_KEY)) {
+                        adPopupModal.style.display = 'flex';
+                        localStorage.setItem(AD_POPUP_STORAGE_KEY, 'true');
+                    }
+                }
 
                 function setupUIListeners() {
                     cartToggleButton.onclick = openCartSidebar;
@@ -709,6 +805,10 @@
                         saveViewPreference();
                         loadViewPreference();
                     };
+                    // New ad popup listener
+                    adPopupCloseBtn.onclick = () => {
+                        adPopupModal.style.display = 'none';
+                    };
                 }
 
                 // Initial Load
@@ -718,6 +818,7 @@
                 displayProducts();
                 updateCartDisplay();
                 setupUIListeners();
+                showAdPopupOnce(); // Show the ad popup if it's the first visit
                 document.getElementById('current-year').textContent = new Date().getFullYear();
 
             } catch (error) {
@@ -731,4 +832,3 @@
     </script>
 </body>
 </html>
-
