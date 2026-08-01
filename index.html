@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الموقع قيد التجهيز</title>
+    <title> الموقع مغلق موقتاً </title>
     
     <style>
         /* إعادة ضبط التنسيقات الأساسية */
@@ -141,8 +141,7 @@
 <body>
 
     <div class="container">
-        <div class="icon">🚀</div>
-        <h1>موقعنا قيد التجهيز</h1>
+        <h1>مالموقع مغلق موقتاً</h1>
         <p>نعمل حالياً على بناء شيء رائع ومميز. سنكون جاهزين للانطلاق قريباً جداً!</p>
 
         <!-- العداد التنازلي -->
@@ -166,16 +165,13 @@
         </div>
 
         <!-- نموذج إشعار عند الافتتاح -->
-        <form class="subscribe-form" id="notifyForm">
-            <input type="email" placeholder="أدخل بريدك الإلكتروني ليصلك تنبيه..." required>
-            <button type="submit">أبلغني</button>
-        </form>
+  
     </div>
 
     <script>
         // حدد تاريخ الافتتاح المتوقع هنا (مثال: بعد 30 يوماً من الآن)
         const launchDate = new Date();
-        launchDate.setDate(launchDate.getDate() + 30);
+        launchDate.setDate(launchDate.getDate() + 999);
 
         function updateCountdown() {
             const currentTime = new Date();
